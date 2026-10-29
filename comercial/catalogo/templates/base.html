@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Comercial{% endblock titulo %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-gray-200 text-slate-800">
+    <div class="mx-auto w-full max-w-7xl px-4">
+        <header>
+            <nav class="flex items-center gap-x-8 py-2">
+                <a href="{% url 'list_categoria'%}" class="text-2xl font-bold text-blue-600">
+                    Comercial
+                </a>
+
+                <div>
+                    <a href="{% url 'list_categoria' %}"
+                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                        Categorias
+                    </a>
+                </div>
+                <a href="{% url 'list_categoria' %}"
+                    class="ml-auto text-base font-medium text-gray-500 transition-colors hover:text-gray-600 sm:text-lg">
+                    Cerrar sesión
+                </a>
+            </nav>
+        </header>
+
+        <main class="w-full py-2 sm:py-4">
+            {% block contenido %} {% endblock contenido %}
+        </main>
+
+
+    </div>
+
+</body>
+
+</html>

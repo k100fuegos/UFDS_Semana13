@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block titulo %}Actualizar categoría{% endblock titulo %}
+
+{% block contenido %}
+<h1>Actualizar Categoría</h1>
+<form method="post" action="{% url 'update_categoria' categoria.id %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="p-2 my-4 bg-blue-600 text-white hover:bg-blue-700 rounded">Guardar</button>
+</form>
+{% endblock contenido %}
