@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from ..forms.categoria_forms import CategoriaForm
 from ..models.categoria import Categoria
@@ -6,17 +7,21 @@ from ..models.categoria import Categoria
 
 @login_required
 def lista_categorias(request):
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.all().order_by('id')
+    paginador = Paginator(categorias, 10)
+
+    pagina = request.GET.get('page')
+    categorias_paginadas = paginador.get_page(pagina)
+
     return render(
-        request, "categoria/lista.html", context={'categorias': categorias}
+        request,
+        "categoria/lista.html",
+        context={'categorias': categorias_paginadas},
     )
 
 
 @login_required
 def delete_categoria(request, id):
-    if request.method != "POST":
-        return redirect("list_categoria")
-
     categoria = get_object_or_404(Categoria, id=id)
     categoria.delete()
     return redirect("list_categoria")

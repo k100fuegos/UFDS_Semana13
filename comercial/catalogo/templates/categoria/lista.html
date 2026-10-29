@@ -1,26 +1,46 @@
-{%extends "base.html"%}
-{%block titulo%} Categoria {%endblock titulo%}
+{% extends "base.html" %}
+{% block titulo %} Categorías {% endblock titulo %}
 
-{%block contenido%}
-<h1 class="font-bold text-balance">Lista de Categorías</h1>
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Lista de Categorías</h1>
 <a href="{% url 'add_categoria' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700">Agregar categoría</a>
-<div class="grid grid-cols-3 gap-2 border-b max-w-lg font-bold">
-    <p>Nombre</p>
-    <p>Eliminar</p>
-    <p>Actualizar</p>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if categorias.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ categorias.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ categorias.number }} de {{ categorias.paginator.num_pages }}
+    </span>
+
+    {% if categorias.has_next %}
+    <a href="?page={{ categorias.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ categorias.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-12 gap-3 border-b max-w-5xl font-bold py-2 text-sm text-gray-700">
+    <p class="col-span-3">Nombre</p>
+    <p class="col-span-7">Descripción</p>
+    <p class="col-span-1 text-center">Eliminar</p>
+    <p class="col-span-1 text-center">Actualizar</p>
 </div>
-{%if categorias%}
-{%for categoria in categorias%}
-<div class="grid grid-cols-3 gap-2 max-w-lg hover:bg-gray-300">
-    <p>{{categoria.nombre}}</p>
-    <form method="post" action="{% url 'delete_categoria' categoria.id %}">
-        {% csrf_token %}
-        <button type="submit" class="cursor-pointer hover:text-blue-600">Eliminar</button>
-    </form>
-    <a href="{% url 'update_categoria' categoria.id %}" class="cursor-pointer hover:text-blue-600">Actualizar</a>
+{% if categorias %}
+{% for categoria in categorias %}
+<div class="grid grid-cols-12 gap-3 max-w-5xl hover:bg-gray-300 items-center py-2.5 border-b border-gray-100 text-sm">
+    <p class="col-span-3 font-semibold text-gray-900">{{ categoria.nombre }}</p>
+    <p class="col-span-7 text-gray-600">{{ categoria.descripcion|default:"Sin descripción" }}</p>
+    <div class="col-span-1 text-center">
+        <a href="{% url 'delete_categoria' categoria.id %}" class="cursor-pointer hover:text-red-800 text-red-600 font-medium" onclick="return confirm('¿Está seguro de eliminar esta categoría?');">Eliminar</a>
+    </div>
+    <div class="col-span-1 text-center">
+        <a href="{% url 'update_categoria' categoria.id %}" class="cursor-pointer hover:text-blue-800 text-blue-600 font-medium">Actualizar</a>
+    </div>
 </div>
-{%endfor%}
-{%else%}
-<p>No hay categorías registradas</p>
-{%endif%}
-{%endblock contenido%}
+{% endfor %}
+{% else %}
+<p class="my-4">No hay categorías registradas</p>
+{% endif %}
+{% endblock contenido %}
