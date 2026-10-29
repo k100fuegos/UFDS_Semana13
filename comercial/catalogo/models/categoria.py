@@ -11,4 +11,4 @@ class Categoria(models.Model):
         auto_now=True, verbose_name="Fecha de actualización")
 
     def __str__(self):
-        return f"id: {self.id} Nombre: {self.nombre} Descripcion: {self.descripcion} Fecha de creacion: {self.created_at} Fecha de actualizacion {self.updated_at}"
+        return self.nombre

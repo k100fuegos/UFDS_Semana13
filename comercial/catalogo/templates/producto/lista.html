@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %} Productos {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Lista de Productos</h1>
+<a href="{% url 'add_producto' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700">Agregar Producto</a>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if productos.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ productos.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ productos.number }} de {{ productos.paginator.num_pages }}
+    </span>
+
+    {% if productos.has_next %}
+    <a href="?page={{ productos.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ productos.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-7 gap-2 border-b max-w-4xl font-bold py-2">
+    <p>Nombre</p>
+    <p>Precio Compra</p>
+    <p>Precio Venta</p>
+    <p>Stock</p>
+    <p>Imagen</p>
+    <p>Eliminar</p>
+    <p>Actualizar</p>
+</div>
+{% if productos %}
+{% for producto in productos %}
+<div class="grid grid-cols-7 gap-2 max-w-4xl hover:bg-gray-300 items-center py-2 border-b border-gray-100">
+    <p>{{ producto.nombre }}</p>
+    <p>{{ producto.precio_compra }}</p>
+    <p>{{ producto.precio_venta }}</p>
+    <p>{{ producto.stock }}</p>
+    {% if producto.imagen %}
+    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-16 h-16 object-cover shadow rounded">
+    {% else %}
+    <p class="text-sm text-gray-500">no hay imagen disponible</p>
+    {% endif %}
+    <a href="{% url 'delete_producto' producto.id %}" class="cursor-pointer hover:text-blue-600 text-red-600 font-medium">Eliminar</a>
+    <a href="{% url 'update_producto' producto.id %}" class="cursor-pointer hover:text-blue-600 text-blue-600 font-medium">Actualizar</a>
+</div>
+{% endfor %}
+{% else %}
+<p class="my-4">No hay productos registrados</p>
+{% endif %}
+{% endblock contenido %}
+

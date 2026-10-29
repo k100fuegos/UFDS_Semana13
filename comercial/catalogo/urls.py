@@ -5,6 +5,12 @@ from .views.categoria import (
     lista_categorias,
     update_categoria,
 )
+from .views.producto import (
+    add_producto,
+    delete_producto,
+    lista_productos,
+    update_producto,
+)
 
 urlpatterns = [
     # Categorías
@@ -19,5 +25,18 @@ urlpatterns = [
         "categoria/eliminar/<int:id>/",
         delete_categoria,
         name="delete_categoria",
+    ),
+    # Productos
+    path("producto/", lista_productos, name="list_producto"),
+    path("producto/agregar/", add_producto, name="add_producto"),
+    path(
+        "producto/actualizar/<int:id>/",
+        update_producto,
+        name="update_producto",
+    ),
+    path(
+        "producto/eliminar/<int:id>/",
+        delete_producto,
+        name="delete_producto",
     ),
 ]
