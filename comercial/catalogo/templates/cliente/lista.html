@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block titulo %} Clientes {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Lista de Clientes</h1>
+<a href="{% url 'add_cliente' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700">Agregar Cliente</a>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if clientes.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ clientes.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ clientes.number }} de {{ clientes.paginator.num_pages }}
+    </span>
+
+    {% if clientes.has_next %}
+    <a href="?page={{ clientes.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ clientes.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-12 gap-3 border-b max-w-6xl font-bold py-2 text-sm text-gray-700">
+    <p class="col-span-2">Nombre</p>
+    <p class="col-span-2">Apellido</p>
+    <p class="col-span-2">Teléfono</p>
+    <p class="col-span-4">Correo Electrónico</p>
+    <p class="col-span-1 text-center">Eliminar</p>
+    <p class="col-span-1 text-center">Actualizar</p>
+</div>
+{% if clientes %}
+{% for cliente in clientes %}
+<div class="grid grid-cols-12 gap-3 max-w-6xl hover:bg-gray-300 items-center py-2.5 border-b border-gray-100 text-sm">
+    <p class="col-span-2 font-medium">{{ cliente.nombre }}</p>
+    <p class="col-span-2">{{ cliente.apellido }}</p>
+    <p class="col-span-2">{{ cliente.telefono }}</p>
+    <p class="col-span-4 break-all text-gray-700">{{ cliente.correo|default:"Sin correo" }}</p>
+    <div class="col-span-1 text-center">
+        <a href="{% url 'delete_cliente' cliente.id %}" class="cursor-pointer hover:text-red-800 text-red-600 font-medium" onclick="return confirm('¿Está seguro de eliminar este cliente?');">Eliminar</a>
+    </div>
+    <div class="col-span-1 text-center">
+        <a href="{% url 'update_cliente' cliente.id %}" class="cursor-pointer hover:text-blue-800 text-blue-600 font-medium">Actualizar</a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p class="my-4">No hay clientes registrados</p>
+{% endif %}
+{% endblock contenido %}

@@ -6,6 +6,12 @@ from .views.categoria import (
     lista_categorias,
     update_categoria,
 )
+from .views.cliente import (
+    add_cliente,
+    delete_cliente,
+    lista_clientes,
+    update_cliente,
+)
 from .views.home import home
 from .views.inicio import inicio
 from .views.producto import (
@@ -16,6 +22,23 @@ from .views.producto import (
     update_producto,
 )
 from .views.registrarUsuario import registraUsuario
+from .views.tipo_pago import (
+    add_tipo_pago,
+    delete_tipo_pago,
+    lista_tipo_pago,
+    update_tipo_pago,
+)
+from .views.usuario import (
+    add_usuario,
+    delete_usuario,
+    lista_usuarios,
+    update_usuario,
+)
+from .views.venta import (
+    detalle_venta,
+    lista_ventas,
+    registrar_venta,
+)
 
 urlpatterns = [
     # Inicio y Home
@@ -56,4 +79,47 @@ urlpatterns = [
         name="delete_producto",
     ),
     path("reporte_productos/", generar_pdf_view, name="reporte_producto"),
+    # Clientes
+    path("cliente/", lista_clientes, name="list_cliente"),
+    path("cliente/agregar/", add_cliente, name="add_cliente"),
+    path(
+        "cliente/actualizar/<int:id>/",
+        update_cliente,
+        name="update_cliente",
+    ),
+    path(
+        "cliente/eliminar/<int:id>/",
+        delete_cliente,
+        name="delete_cliente",
+    ),
+    # Tipos de Pago
+    path("tipo_pago/", lista_tipo_pago, name="list_tipo_pago"),
+    path("tipo_pago/agregar/", add_tipo_pago, name="add_tipo_pago"),
+    path(
+        "tipo_pago/actualizar/<int:id>/",
+        update_tipo_pago,
+        name="update_tipo_pago",
+    ),
+    path(
+        "tipo_pago/eliminar/<int:id>/",
+        delete_tipo_pago,
+        name="delete_tipo_pago",
+    ),
+    # Ventas
+    path("venta/", lista_ventas, name="list_venta"),
+    path("venta/registrar/", registrar_venta, name="registrar_venta"),
+    path("venta/detalle/<int:id>/", detalle_venta, name="detalle_venta"),
+    # Usuarios (Gestión para Administrador)
+    path("usuario/", lista_usuarios, name="list_usuario"),
+    path("usuario/agregar/", add_usuario, name="add_usuario"),
+    path(
+        "usuario/actualizar/<int:id>/",
+        update_usuario,
+        name="update_usuario",
+    ),
+    path(
+        "usuario/eliminar/<int:id>/",
+        delete_usuario,
+        name="delete_usuario",
+    ),
 ]

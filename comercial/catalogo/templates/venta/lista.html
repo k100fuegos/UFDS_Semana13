@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %} Ventas {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Registro de Ventas</h1>
+<a href="{% url 'registrar_venta' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700 font-semibold">
+    + Nueva Venta
+</a>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if ventas.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ ventas.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ ventas.number }} de {{ ventas.paginator.num_pages }}
+    </span>
+
+    {% if ventas.has_next %}
+    <a href="?page={{ ventas.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ ventas.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-6 gap-2 border-b max-w-5xl font-bold py-2">
+    <p>N° Venta</p>
+    <p>Fecha</p>
+    <p>Cliente</p>
+    <p>Tipo de Pago</p>
+    <p>Total</p>
+    <p>Acciones</p>
+</div>
+{% if ventas %}
+{% for venta in ventas %}
+<div class="grid grid-cols-6 gap-2 max-w-5xl hover:bg-gray-300 items-center py-2 border-b border-gray-100">
+    <p class="font-semibold">#{{ venta.id }}</p>
+    <p class="text-sm text-gray-600">{{ venta.fecha|date:"d/m/Y H:i" }}</p>
+    <p>{{ venta.cliente.nombre }} {{ venta.cliente.apellido }}</p>
+    <p>{{ venta.tipo_pago.nombre }}</p>
+    <p class="font-bold text-green-700">${{ venta.total }}</p>
+    <div>
+        <a href="{% url 'detalle_venta' venta.id %}" class="cursor-pointer text-blue-600 hover:text-blue-800 font-medium underline">
+            Ver Detalle
+        </a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p class="my-4">No se han registrado ventas aún</p>
+{% endif %}
+{% endblock contenido %}
+

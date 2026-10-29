@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block titulo %} Gestión de Usuarios {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Gestión de Usuarios</h1>
+
+{% if messages %}
+<div class="my-4">
+    {% for message in messages %}
+    <div class="p-3 mb-2 rounded {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<a href="{% url 'add_usuario' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700 font-semibold">
+    + Agregar Usuario
+</a>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if usuarios.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ usuarios.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}
+    </span>
+
+    {% if usuarios.has_next %}
+    <a href="?page={{ usuarios.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ usuarios.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-12 gap-3 border-b max-w-7xl font-bold py-2 text-sm text-gray-700">
+    <p class="col-span-2">Usuario</p>
+    <p class="col-span-2">Nombre Completo</p>
+    <p class="col-span-4">Correo Electrónico</p>
+    <p class="col-span-1">Teléfono</p>
+    <p class="col-span-1 text-center">Rol</p>
+    <p class="col-span-1 text-center">Estado</p>
+    <p class="col-span-1 text-right">Acciones</p>
+</div>
+{% if usuarios %}
+{% for u in usuarios %}
+<div class="grid grid-cols-12 gap-3 max-w-7xl hover:bg-gray-300 items-center py-2.5 border-b border-gray-100 text-sm">
+    <p class="col-span-2 font-semibold text-gray-900">{{ u.username }}</p>
+    <p class="col-span-2">{{ u.first_name }} {{ u.last_name }}</p>
+    <p class="col-span-4 break-all text-gray-700">{{ u.email|default:"Sin correo" }}</p>
+    <p class="col-span-1">{{ u.telefono }}</p>
+    <div class="col-span-1 text-center">
+        <span class="px-2 py-0.5 rounded text-xs font-bold {% if u.rol.nombre == 'admin' %}bg-purple-100 text-purple-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+            {{ u.rol.nombre }}
+        </span>
+    </div>
+    <div class="col-span-1 text-center">
+        {% if u.is_active %}
+        <span class="text-green-600 font-semibold text-xs">Activo</span>
+        {% else %}
+        <span class="text-red-500 font-semibold text-xs">Inactivo</span>
+        {% endif %}
+    </div>
+    <div class="col-span-1 text-right space-x-1">
+        <a href="{% url 'update_usuario' u.id %}" class="cursor-pointer text-blue-600 hover:text-blue-800 font-medium">Editar</a>
+        {% if u.id != request.user.id %}
+        <a href="{% url 'delete_usuario' u.id %}" class="cursor-pointer text-red-600 hover:text-red-800 font-medium" onclick="return confirm('¿Está seguro de eliminar al usuario {{ u.username }}?');">Eliminar</a>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p class="my-4">No hay usuarios registrados</p>
+{% endif %}
+{% endblock contenido %}

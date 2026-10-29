@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% block titulo %} Editar Usuario {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="text-2xl font-bold mb-4">Editar Usuario: {{ usuario.username }}</h1>
+<form method="post" action="{% url 'update_usuario' usuario.id %}" class="max-w-xl bg-white p-6 rounded-lg shadow">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="flex gap-3 mt-4">
+        <a href="{% url 'list_usuario' %}" class="p-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-100">
+            Cancelar
+        </a>
+        <button type="submit" class="p-2 bg-blue-600 text-white hover:bg-blue-700 rounded cursor-pointer font-semibold">
+            Guardar Cambios
+        </button>
+    </div>
+</form>
+{% endblock contenido %}
+

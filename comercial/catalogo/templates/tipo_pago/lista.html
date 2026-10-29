@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %} Tipos de Pago {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="font-bold text-2xl text-balance">Tipos de Pago</h1>
+<a href="{% url 'add_tipo_pago' %}" class="p-2 bg-blue-600 my-4 inline-block text-white rounded hover:bg-blue-700">Agregar Tipo de Pago</a>
+
+<nav class="flex flex-wrap items-center gap-2 my-4">
+    {% if tipos_pago.has_previous %}
+    <a href="?page=1" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded">Primera</a>
+    <a href="?page={{ tipos_pago.previous_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Anterior</a>
+    {% endif %}
+
+    <span class="px-3 py-1 text-gray-600">
+        Página {{ tipos_pago.number }} de {{ tipos_pago.paginator.num_pages }}
+    </span>
+
+    {% if tipos_pago.has_next %}
+    <a href="?page={{ tipos_pago.next_page_number }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Siguiente</a>
+    <a href="?page={{ tipos_pago.paginator.num_pages }}" class="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded">Última</a>
+    {% endif %}
+</nav>
+
+<div class="grid grid-cols-4 gap-2 border-b max-w-4xl font-bold py-2">
+    <p>Nombre</p>
+    <p>Descripción</p>
+    <p>Eliminar</p>
+    <p>Actualizar</p>
+</div>
+{% if tipos_pago %}
+{% for tp in tipos_pago %}
+<div class="grid grid-cols-4 gap-2 max-w-4xl hover:bg-gray-300 items-center py-2 border-b border-gray-100">
+    <p>{{ tp.nombre }}</p>
+    <p>{{ tp.descripcion|default:"Sin descripción" }}</p>
+    <a href="{% url 'delete_tipo_pago' tp.id %}" class="cursor-pointer hover:text-blue-600 text-red-600 font-medium" onclick="return confirm('¿Está seguro de eliminar este tipo de pago?');">Eliminar</a>
+    <a href="{% url 'update_tipo_pago' tp.id %}" class="cursor-pointer hover:text-blue-600 text-blue-600 font-medium">Actualizar</a>
+</div>
+{% endfor %}
+{% else %}
+<p class="my-4">No hay tipos de pago registrados</p>
+{% endif %}
+{% endblock contenido %}
+

@@ -11,20 +11,38 @@
 <body class="min-h-screen bg-gray-200 text-slate-800">
     <div class="mx-auto w-full max-w-7xl px-4">
         <header>
-            <nav class="flex items-center gap-x-8 py-2">
+            <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 py-3 border-b border-gray-300">
                 <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">
                     Comercial
                 </a>
 
-                <div class="flex items-center gap-6">
+                <div class="flex flex-wrap items-center gap-5">
                     <a href="{% url 'list_categoria' %}"
-                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                        class="text-base font-medium text-gray-600 transition-colors hover:text-blue-600">
                         Categorías
                     </a>
                     <a href="{% url 'list_producto' %}"
-                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                        class="text-base font-medium text-gray-600 transition-colors hover:text-blue-600">
                         Productos
                     </a>
+                    <a href="{% url 'list_cliente' %}"
+                        class="text-base font-medium text-gray-600 transition-colors hover:text-blue-600">
+                        Clientes
+                    </a>
+                    <a href="{% url 'list_tipo_pago' %}"
+                        class="text-base font-medium text-gray-600 transition-colors hover:text-blue-600">
+                        Tipos de Pago
+                    </a>
+                    <a href="{% url 'list_venta' %}"
+                        class="text-base font-medium text-gray-600 transition-colors hover:text-blue-600">
+                        Ventas
+                    </a>
+                    {% if user.is_authenticated and user.rol.nombre == 'admin' %}
+                    <a href="{% url 'list_usuario' %}"
+                        class="text-base font-semibold text-purple-700 transition-colors hover:text-purple-900">
+                        Usuarios
+                    </a>
+                    {% endif %}
                 </div>
 
                 <div class="ml-auto flex items-center gap-4">
@@ -35,13 +53,13 @@
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
                         <button type="submit"
-                            class="cursor-pointer text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                            class="cursor-pointer text-base font-medium text-gray-500 transition-colors hover:text-red-600">
                             Cerrar sesión
                         </button>
                     </form>
                     {% else %}
                     <a href="{% url 'login' %}"
-                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600">
                         Iniciar sesión
                     </a>
                     {% endif %}
@@ -49,7 +67,7 @@
             </nav>
         </header>
 
-        <main class="w-full py-2 sm:py-4">
+        <main class="w-full py-4">
             {% block contenido %} {% endblock contenido %}
         </main>
     </div>

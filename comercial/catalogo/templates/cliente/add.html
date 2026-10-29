@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% block titulo %} Agregar Cliente {% endblock titulo %}
+
+{% block contenido %}
+<h1 class="text-2xl font-bold mb-4">Agregar Cliente</h1>
+<form method="post" action="{% url 'add_cliente' %}" class="max-w-xl">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="p-2 my-4 bg-blue-600 text-white hover:bg-blue-700 rounded cursor-pointer">Guardar</button>
+</form>
+{% endblock contenido %}
+
