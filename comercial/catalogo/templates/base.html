@@ -12,36 +12,47 @@
     <div class="mx-auto w-full max-w-7xl px-4">
         <header>
             <nav class="flex items-center gap-x-8 py-2">
-                <a href="{% url 'list_categoria' %}" class="text-2xl font-bold text-blue-600">
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">
                     Comercial
                 </a>
 
-                <div>
+                <div class="flex items-center gap-6">
                     <a href="{% url 'list_categoria' %}"
                         class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
-                        Categorias
+                        Categorías
                     </a>
-                </div>
-                <div>
                     <a href="{% url 'list_producto' %}"
                         class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
                         Productos
                     </a>
                 </div>
-                <a href="{% url 'list_categoria' %}"
-                    class="ml-auto text-base font-medium text-gray-500 transition-colors hover:text-gray-600 sm:text-lg">
-                    Cerrar sesión
-                </a>
+
+                <div class="ml-auto flex items-center gap-4">
+                    {% if user.is_authenticated %}
+                    <span class="text-sm text-gray-600">
+                        {{ user.username }} (<strong>{{ user.rol.nombre }}</strong>)
+                    </span>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="cursor-pointer text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                            Cerrar sesión
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                        class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                        Iniciar sesión
+                    </a>
+                    {% endif %}
+                </div>
             </nav>
         </header>
 
         <main class="w-full py-2 sm:py-4">
             {% block contenido %} {% endblock contenido %}
         </main>
-
-
     </div>
-
 </body>
 
 </html>

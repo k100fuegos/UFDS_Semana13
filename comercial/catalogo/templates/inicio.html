@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercial - {% block titulo %}{% endblock titulo %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-200 text-slate-800 p-2">
+    <header class="container mx-auto">
+        <nav class="flex justify-between py-4">
+            <a href="{% url 'inicio' %}"
+                class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                Sistema comercial
+            </a>
+            <div class="flex gap-4">
+                <a href="{% url 'registrar_usuario' %}"
+                    class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                    Registro
+                </a>
+                <a href="{% url 'login' %}"
+                    class="text-base font-medium text-gray-500 transition-colors hover:text-blue-600 sm:text-lg">
+                    Login
+                </a>
+            </div>
+        </nav>
+    </header>
+    <main class="min-h-screen justify-center items-center flex">
+        {% block contenido %}
+        {% endblock contenido %}
+    </main>
+</body>
+
+</html>
+

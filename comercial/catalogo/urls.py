@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from .views.categoria import (
     add_categoria,
@@ -5,14 +6,29 @@ from .views.categoria import (
     lista_categorias,
     update_categoria,
 )
+from .views.home import home
+from .views.inicio import inicio
 from .views.producto import (
     add_producto,
     delete_producto,
+    generar_pdf_view,
     lista_productos,
     update_producto,
 )
+from .views.registrarUsuario import registraUsuario
 
 urlpatterns = [
+    # Inicio y Home
+    path("", inicio, name="inicio"),
+    path("home/", home, name="home"),
+    # Autenticación
+    path(
+        "login/",
+        LoginView.as_view(template_name="login/login.html"),
+        name="login",
+    ),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("registrar_usuario/", registraUsuario, name="registrar_usuario"),
     # Categorías
     path("categoria/", lista_categorias, name="list_categoria"),
     path("categoria/agregar/", add_categoria, name="add_categoria"),
@@ -39,4 +55,5 @@ urlpatterns = [
         delete_producto,
         name="delete_producto",
     ),
+    path("reporte_productos/", generar_pdf_view, name="reporte_producto"),
 ]

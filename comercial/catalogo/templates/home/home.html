@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% block titulo %} Sistema comercial {% endblock titulo %}
+{% block contenido %}
+<div class="max-w-2xl py-4">
+    <h1 class="font-bold text-blue-600 text-3xl">
+        Sistema comercial
+    </h1>
+    <p class="mt-2 text-gray-700">Bienvenido/a, <strong>{{ user.first_name }} {{ user.last_name }}</strong> (Rol: <span class="text-blue-600 font-semibold">{{ user.rol.nombre }}</span>)</p>
+</div>
+{% endblock contenido %}
+
